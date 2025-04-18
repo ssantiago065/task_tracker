@@ -7,27 +7,29 @@ import (
 	"github.com/ssantiago065/task_tracker/tasks"
 )
 
-func LoadTasks(filename string) ([]tasks.Task, error) {
+func LoadTasks(filename string) (tasks.TaskStore, error) {
+	var store tasks.TaskStore
+
 	file, err := os.Open(filename)
 	if err != nil {
-		if os.IsNotExist(err) { // If file does not exist, return empty list
-			return []tasks.Task{}, nil
+		if os.IsNotExist(err) {
+			store = tasks.TaskStore{LastID: 0, Tasks: []tasks.Task{}}
+			return store, nil
 		}
-		return nil, err
+		return store, err
 	}
 	defer file.Close()
 
-	var tasks []tasks.Task
 	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&tasks)
+	err = decoder.Decode(&store)
 	if err != nil {
-		return nil, err
+		return store, err
 	}
 
-	return tasks, nil
+	return store, nil
 }
 
-func SaveTasks(filename string, tasks []tasks.Task) error {
+func SaveTasks(filename string, store tasks.TaskStore) error {
 	file, err := os.Create(filename)
 	if err != nil {
 		return err
@@ -35,7 +37,7 @@ func SaveTasks(filename string, tasks []tasks.Task) error {
 	defer file.Close()
 
 	encoder := json.NewEncoder(file)
-	err = encoder.Encode(tasks)
+	err = encoder.Encode(&store)
 	if err != nil {
 		return err
 	}
