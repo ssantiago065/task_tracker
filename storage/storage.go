@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"os"
 	"time"
-
-	"github.com/ssantiago065/task_tracker/tasks"
 )
 
 type Task struct {
@@ -21,13 +19,13 @@ type TaskStore struct {
 	Tasks  []Task `json:"tasks"`
 }
 
-func LoadTasks(filename string) (tasks.TaskStore, error) {
-	var store tasks.TaskStore
+func LoadTasks(filename string) (TaskStore, error) {
+	var store TaskStore
 
 	file, err := os.Open(filename)
 	if err != nil {
 		if os.IsNotExist(err) {
-			store = tasks.TaskStore{LastID: 0, Tasks: []tasks.Task{}}
+			store = TaskStore{LastID: 0, Tasks: []Task{}}
 			return store, nil
 		}
 		return store, err
@@ -43,7 +41,7 @@ func LoadTasks(filename string) (tasks.TaskStore, error) {
 	return store, nil
 }
 
-func SaveTasks(filename string, store tasks.TaskStore) error {
+func SaveTasks(filename string, store TaskStore) error {
 	file, err := os.Create(filename)
 	if err != nil {
 		return err
@@ -51,6 +49,7 @@ func SaveTasks(filename string, store tasks.TaskStore) error {
 	defer file.Close()
 
 	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
 	err = encoder.Encode(&store)
 	if err != nil {
 		return err
