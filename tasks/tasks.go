@@ -29,3 +29,21 @@ func AddTask(filename string, description string) error {
 	err = storage.SaveTasks(filename, store)
 	return err
 }
+
+func DeleteTask(filename string, id int) error {
+	var store storage.TaskStore
+
+	store, err := storage.LoadTasks(filename)
+	if err != nil {
+		return err
+	}
+
+	for index, task := range store.Tasks {
+		if task.ID == id {
+			store.Tasks = append(store.Tasks[:index], store.Tasks[index+1:]...)
+		}
+	}
+
+	err = storage.SaveTasks(filename, store)
+	return err
+}
