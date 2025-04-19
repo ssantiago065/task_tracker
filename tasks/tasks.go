@@ -75,3 +75,26 @@ func UpdateTask(filename string, id int, description string) error {
 
 	return storage.SaveTasks(filename, store)
 }
+
+func MarkInProgress(filename string, id int) error {
+	store, err := storage.LoadTasks(filename)
+	if err != nil {
+		return err
+	}
+
+	marked := false
+	for index, task := range store.Tasks {
+		if task.ID == id {
+			store.Tasks[index].Status = "in-progress"
+			store.Tasks[index].UpdatedAt = time.Now()
+			marked = true
+			break
+		}
+	}
+
+	if !marked {
+		return fmt.Errorf("task %d not found", id)
+	}
+
+	return storage.SaveTasks(filename, store)
+}

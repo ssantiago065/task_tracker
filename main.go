@@ -14,6 +14,7 @@ func printUsage() {
 	fmt.Println("  task-cli add <description>")
 	fmt.Println("  task-cli delete <task ID>")
 	fmt.Println("  task-cli update <task_ID> <description>")
+	fmt.Println("  task-cli mark-in-progress <task_ID>")
 }
 
 func main() {
@@ -76,6 +77,24 @@ func main() {
 		}
 		description := strings.Join(os.Args[3:], " ")
 		err = tasks.UpdateTask(filename, id, description)
+		if err != nil {
+			fmt.Printf("Error updating task: %v", err)
+			return
+		}
+		fmt.Println("Task updated successfully.")
+
+	case "mark-in-progress":
+		if len(os.Args) < 3 {
+			fmt.Println("Error: task ID is required.")
+			printUsage()
+			return
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Printf("Error: invalid task ID '%s'.", os.Args[2])
+			return
+		}
+		err = tasks.MarkInProgress(filename, id)
 		if err != nil {
 			fmt.Printf("Error updating task: %v", err)
 			return
