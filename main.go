@@ -15,6 +15,9 @@ func printUsage() {
 	fmt.Println("  task-cli delete <task ID>")
 	fmt.Println("  task-cli update <task_ID> <description>")
 	fmt.Println("  task-cli mark-in-progress <task_ID>")
+	fmt.Println("  task-cli mark-done <task_ID>")
+	fmt.Println("  task-cli mark-todo <task_ID>")
+	fmt.Println("  task-cli list")
 }
 
 func main() {
@@ -99,7 +102,51 @@ func main() {
 			fmt.Printf("Error updating task: %v", err)
 			return
 		}
-		fmt.Println("Task updated successfully.")
+		fmt.Println("Task marked in progress successfully.")
+
+	case "mark-done":
+		if len(os.Args) < 3 {
+			fmt.Println("Error: task ID is required.")
+			printUsage()
+			return
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Printf("Error: invalid task ID '%s'.", os.Args[2])
+			return
+		}
+		err = tasks.MarkDone(filename, id)
+		if err != nil {
+			fmt.Printf("Error updating task: %v", err)
+			return
+		}
+		fmt.Println("Task marked done successfully.")
+
+	case "mark-todo":
+		if len(os.Args) < 3 {
+			fmt.Println("Error: task ID is required.")
+			printUsage()
+			return
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Printf("Error: invalid task ID '%s'.", os.Args[2])
+			return
+		}
+		err = tasks.MarkTodo(filename, id)
+		if err != nil {
+			fmt.Printf("Error updating task: %v", err)
+			return
+		}
+		fmt.Println("Task marked todo successfully.")
+
+	case "list":
+		err := tasks.ListTasks(filename)
+		if err != nil {
+			fmt.Printf("Error listing tasks: %v", err)
+			return
+		}
+		fmt.Println("Tasks listed successfully.")
 
 	default:
 		fmt.Printf("Unknown command: %s", command)
