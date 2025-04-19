@@ -20,6 +20,7 @@ func printUsage() {
 	fmt.Println("  task-cli list")
 	fmt.Println("  task-cli list-done")
 	fmt.Println("  task-cli list-todo")
+	fmt.Println("  task-cli list-in-progress")
 
 }
 
@@ -160,12 +161,20 @@ func main() {
 		fmt.Println("Done tasks listed successfully.")
 
 	case "list-todo":
-		err := tasks.ListDone(filename)
+		err := tasks.ListTodo(filename)
 		if err != nil {
 			fmt.Printf("Error listing tasks: %v", err)
 			return
 		}
 		fmt.Println("Todo tasks listed successfully.")
+
+	case "list-in-progress":
+		err := tasks.ListInProgress(filename)
+		if err != nil {
+			fmt.Printf("Error listing tasks: %v", err)
+			return
+		}
+		fmt.Println("In progress tasks listed successfully.")
 
 	default:
 		fmt.Printf("Unknown command: %s", command)

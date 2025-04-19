@@ -214,3 +214,27 @@ func ListTodo(filename string) error {
 
 	return nil
 }
+
+func ListInProgress(filename string) error {
+	store, err := storage.LoadTasks(filename)
+	if err != nil {
+		return err
+	}
+
+	if len(store.Tasks) == 0 {
+		return fmt.Errorf("no tasks found")
+	}
+
+	for _, task := range store.Tasks {
+		if task.Status == "in-progress" {
+			fmt.Printf("ID: %d\nDescription: %s\nStatus: %s\nCreated At: %s\nUpdated At: %s\n\n",
+				task.ID,
+				task.Description,
+				task.Status,
+				task.CreatedAt.Format(time.ANSIC),
+				task.UpdatedAt.Format(time.ANSIC))
+		}
+	}
+
+	return nil
+}
