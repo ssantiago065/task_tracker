@@ -19,6 +19,7 @@ func printUsage() {
 	fmt.Println("  task-cli mark-todo <task_ID>")
 	fmt.Println("  task-cli list")
 	fmt.Println("  task-cli list-done")
+	fmt.Println("  task-cli list-todo")
 
 }
 
@@ -157,6 +158,14 @@ func main() {
 			return
 		}
 		fmt.Println("Done tasks listed successfully.")
+
+	case "list-todo":
+		err := tasks.ListDone(filename)
+		if err != nil {
+			fmt.Printf("Error listing tasks: %v", err)
+			return
+		}
+		fmt.Println("Todo tasks listed successfully.")
 
 	default:
 		fmt.Printf("Unknown command: %s", command)
