@@ -41,6 +41,27 @@ func DeleteTask(filename string, id int) error {
 	for index, task := range store.Tasks {
 		if task.ID == id {
 			store.Tasks = append(store.Tasks[:index], store.Tasks[index+1:]...)
+			break
+		}
+	}
+
+	err = storage.SaveTasks(filename, store)
+	return err
+}
+
+func UpdateTask(filename string, id int, description string) error {
+	var store storage.TaskStore
+
+	store, err := storage.LoadTasks(filename)
+	if err != nil {
+		return err
+	}
+
+	for index, task := range store.Tasks {
+		if task.ID == id {
+			store.Tasks[index].Description = description
+			store.Tasks[index].UpdatedAt = time.Now()
+			break
 		}
 	}
 

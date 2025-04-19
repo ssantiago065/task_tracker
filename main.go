@@ -13,6 +13,7 @@ func printUsage() {
 	fmt.Println("Usage:")
 	fmt.Println("  task-cli add <description>")
 	fmt.Println("  task-cli delete <task ID>")
+	fmt.Println("  task-cli update <task_ID> <description>")
 }
 
 func main() {
@@ -56,6 +57,30 @@ func main() {
 			return
 		}
 		fmt.Println("Task deleted successfully.")
+
+	case "update":
+		if len(os.Args) < 3 {
+			fmt.Println("Error: task ID is required.")
+			printUsage()
+			return
+		}
+		if len(os.Args) < 4 {
+			fmt.Println("Error: new description is required")
+			printUsage()
+			return
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Printf("Error: invalid task ID '%s'.", os.Args[2])
+			return
+		}
+		description := strings.Join(os.Args[3:], " ")
+		err = tasks.UpdateTask(filename, id, description)
+		if err != nil {
+			fmt.Printf("Error updating task: %v", err)
+			return
+		}
+		fmt.Println("Task updated successfully.")
 
 	default:
 		fmt.Printf("Unknown command: %s", command)
