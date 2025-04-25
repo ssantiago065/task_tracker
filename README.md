@@ -1,84 +1,113 @@
-# Task Tracker
+# 📝 Task Tracker CLI
 
-Task Tracker is a command-line interface (CLI) application for managing tasks. It allows users to add, update, delete, and list tasks with different statuses (to-do, in progress, completed). This project is designed to practice backend skills in Golang, including file handling, CLI argument processing, and JSON data manipulation.
+**Task Tracker CLI** is a simple command-line tool written in Go for managing personal tasks. It allows you to create, view, update, and delete tasks, as well as mark them by status: `todo`, `in-progress`, or `done`.
 
-## Features
+## ⚙️ Installation
 
-- Add, update, and delete tasks.
-- Mark tasks as "in progress" or "completed".
-- List tasks by status.
-- Store data in a JSON file.
-- Uses only Go standard libraries.
+1. Make sure you have [Go](https://go.dev/doc/install) installed.
+2. Clone the repository:
 
-## Requirements
+   git clone https://github.com/ssantiago065/task_tracker
+   cd task_tracker
 
-- Go 1.22 or later
+4. Build the CLI tool:
 
-## Installation
-
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/ssantiago065/task-tracker.git
-   cd task-tracker
-   ```
-
-2. Initialize the Go module (if not already created):
-   ```sh
-   go mod tidy
-   ```
-
-3. Build the application:
-   ```sh
    go build -o task-cli
-   ```
 
-## Usage
+5. Use the tool:
 
-Run the application from the terminal:
+   ./task-cli <command> [arguments]
 
-### Add a task
-```sh
-task-cli add "Buy groceries"
-```
-Expected output:
-```
-Task added successfully (ID: 1)
-```
+---
 
-### Update a task
-```sh
-task-cli update 1 "Buy groceries and cook dinner"
-```
+## 🚀 Usage
 
-### Delete a task
-```sh
-task-cli delete 1
-```
+The CLI stores your tasks in a local `tasks.json` file. Below is a breakdown of the available commands, along with examples.
 
-### Change task status
-```sh
-task-cli mark-in-progress 1
-task-cli mark-done 1
-```
+### ➕ `add [description]`
+Adds a new task with the given description.
 
-### List tasks
-```sh
-task-cli list
-task-cli list done
-task-cli list todo
-task-cli list in-progress
-```
+./task-cli add "Finish Go project"
 
-## Project Structure
 
-```
-task-tracker/
-│── main.go           # Entry point
-│── tasks.go          # Task management logic
-│── storage.go        # JSON and file handling
-│── go.mod            # Go module definition
-│── go.sum            # Dependencies (if any)
-│── tasks.json        # JSON file storing tasks
-│── README.md         # Documentation
-│── .gitignore        # Git ignored files
-```
+---
+
+### 🗑️ `delete [task_id]`
+Deletes the task with the given ID.
+
+./task-cli delete 1
+
+
+---
+
+### ✏️ `update [task_id] [new description]`
+Updates the description of the specified task.
+
+./task-cli update 1 "Finish Go CLI project with filters"
+
+
+---
+
+### 🚧 `mark-in-progress [task_id]`
+Marks a task as `in-progress`.
+
+./task-cli mark-in-progress 2
+
+
+---
+
+### ✅ `mark-done [task_id]`
+Marks a task as `done`.
+
+./task-cli mark-done 3
+
+
+---
+
+### ⏳ `mark-todo [task_id]`
+Resets a task’s status to `todo`.
+
+./task-cli mark-todo 3
+
+
+---
+
+### 📋 `list`
+Lists all tasks regardless of status.
+
+./task-cli list
+
+
+---
+
+### 🔍 `list-done`
+Lists only the tasks marked as `done`.
+
+./task-cli list-done
+
+
+---
+
+### 🧮 `list-todo`
+Lists only the tasks marked as `todo`.
+
+./task-cli list-todo
+
+
+---
+
+### 🛠️ `list-in-progress`
+Lists only the tasks marked as `in-progress`.
+
+./task-cli list-in-progress
+
+---
+
+## 📌 Notes
+
+- Tasks are stored locally in a `tasks.json` file.
+- This tool is designed for local use and learning purposes.
+- No external dependencies or databases required.
+
+---
+
